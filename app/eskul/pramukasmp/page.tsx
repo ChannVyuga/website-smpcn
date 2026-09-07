@@ -100,7 +100,7 @@ function AnimatedStat({
   useEffect(() => {
     if (!visible) return;
 
-    let start = 0;
+    const start = 0;
     const duration = 1300;
     const startTime = performance.now();
 
