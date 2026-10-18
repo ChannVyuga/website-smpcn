@@ -2,15 +2,19 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
-const secretValue = process.env.NEXTAUTH_SECRET;
+// Dicek saat dipakai (bukan saat file di-import) supaya build di Vercel
+// tidak gagal kalau env var belum diisi.
+function getSecret(): Uint8Array {
+  const secretValue = process.env.NEXTAUTH_SECRET;
 
-if (!secretValue || secretValue.length < 32) {
-  throw new Error(
-    'NEXTAUTH_SECRET wajib diisi dengan secret minimal 32 karakter.'
-  );
+  if (!secretValue || secretValue.length < 32) {
+    throw new Error(
+      'NEXTAUTH_SECRET wajib diisi dengan secret minimal 32 karakter.'
+    );
+  }
+
+  return new TextEncoder().encode(secretValue);
 }
-
-const SECRET = new TextEncoder().encode(secretValue);
 
 export const SESSION_IDLE_MS = 15 * 60 * 1000;
 export const SESSION_IDLE_SECONDS = 15 * 60;
@@ -38,14 +42,14 @@ export async function createToken(
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt(now)
     .setExpirationTime(now + SESSION_IDLE_SECONDS)
-    .sign(SECRET);
+    .sign(getSecret());
 }
 
 export async function verifyToken(
   token: string
 ): Promise<SessionPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, SECRET, {
+    const { payload } = await jwtVerify(token, getSecret(), {
       algorithms: ['HS256'],
     });
 

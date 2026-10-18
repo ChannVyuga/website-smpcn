@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import ImageUploadField from '@/components/admin/ImageUploadField';
 import {
   Plus,
   Search,
@@ -730,64 +731,15 @@ export default function AdminPrestasiPage() {
                     </datalist>
                   </label>
 
-                  <label>
-                    <span style={labelStyle}>URL Foto *</span>
-                    <input
-                      required
-                      type="url"
-                      value={form.foto_url}
-                      onChange={(event) => updateField('foto_url', event.target.value)}
-                      placeholder="https://..."
-                      style={inputStyle}
-                    />
-                  </label>
+                  <ImageUploadField
+                    label="Foto prestasi * (JPG/PNG, maksimal 2 MB)"
+                    labelStyle={labelStyle}
+                    value={form.foto_url}
+                    onChange={(url) => updateField('foto_url', url)}
+                    required
+                    previewStyle={{ maxWidth: 320, maxHeight: 240, objectFit: 'contain', background: '#FFFFFF' }}
+                  />
                 </div>
-
-                  {form.foto_url && (
-                    <div
-                      style={{
-                        marginTop: 16,
-                        padding: 14,
-                        border: `1px solid ${C.border}`,
-                        borderRadius: 14,
-                        background: C.bg,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 8,
-                          marginBottom: 12,
-                        }}
-                      >
-                        <Award size={16} color={C.green} />
-                        <span style={{ fontSize: 12, fontWeight: 800, color: C.text }}>
-                          Preview foto prestasi
-                        </span>
-                      </div>
-
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={form.foto_url}
-                        alt="Preview prestasi"
-                        onError={(event) => {
-                          event.currentTarget.style.display = 'none';
-                        }}
-                        onLoad={(event) => {
-                          event.currentTarget.style.display = 'block';
-                        }}
-                        style={{
-                          display: 'block',
-                          width: '100%',
-                          maxHeight: 240,
-                          objectFit: 'contain',
-                          borderRadius: 10,
-                          background: '#FFFFFF',
-                        }}
-                      />
-                    </div>
-                  )}
                 <label style={{ display: 'block', marginTop: 16 }}>
                   <span style={labelStyle}>Slug URL *</span>
                   <input

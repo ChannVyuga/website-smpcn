@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ImageUploadField from '@/components/admin/ImageUploadField';
 import {
   ArrowLeft,
   Plus,
@@ -605,39 +606,13 @@ export default function AdminBeritaPage() {
                 </div>
 
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label style={labelStyle}>URL foto *</label>
-                  <input
-                    style={inputStyle}
-                    type="url"
+                  <ImageUploadField
+                    label="Foto berita * (JPG/PNG, maksimal 2 MB)"
+                    labelStyle={labelStyle}
                     value={form.foto_url}
-                    onChange={(e) => updateField('foto_url', e.target.value)}
+                    onChange={(url) => updateField('foto_url', url)}
                     required
-                    placeholder="https://..."
                   />
-                  {form.foto_url && (
-                    <div style={{ marginTop: 12 }}>
-                      <img
-                        src={form.foto_url}
-                        alt="Pratinjau foto berita"
-                        referrerPolicy="no-referrer"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                        }}
-                        onLoad={(e) => {
-                          e.currentTarget.style.display = 'block';
-                        }}
-                        style={{
-                          display: 'block',
-                          width: '100%',
-                          maxWidth: 280,
-                          maxHeight: 170,
-                          objectFit: 'cover',
-                          borderRadius: 9,
-                          border: '1px solid #E8ECF1',
-                        }}
-                      />
-                    </div>
-                  )}
                 </div>
 
                 <div style={{ gridColumn: '1 / -1' }}>
