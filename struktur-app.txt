@@ -1,0 +1,166 @@
+Folder PATH listing
+Volume serial number is 423B-8213
+C:\USERS\SOLIT\DOCUMENTS\SPMB\SMPCN\APP
+¦   favicon.ico
+¦   globals.css
+¦   layout.tsx
+¦   page.tsx
+¦   ScrollToTop.tsx
+¦   
++---admin
+¦   +---dashboard
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---laporan
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---login
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---pendaftar
+¦           page.tsx
+¦           
++---api
+¦   +---admin
+¦   ¦   +---pendaftar
+¦   ¦       ¦   route.ts
+¦   ¦       ¦   
+¦   ¦       +---[id]
+¦   ¦               route.ts
+¦   ¦               
+¦   +---auth
+¦   ¦   +---login
+¦   ¦   ¦       route.ts
+¦   ¦   ¦       
+¦   ¦   +---logout
+¦   ¦   ¦       route.ts
+¦   ¦   ¦       
+¦   ¦   +---me
+¦   ¦   ¦       route.ts
+¦   ¦   ¦       
+¦   ¦   +---register
+¦   ¦           route.ts
+¦   ¦           
+¦   +---news
+¦   ¦       route.js
+¦   ¦       
+¦   +---pendaftaran
+¦   ¦       route.ts
+¦   ¦       
+¦   +---prestasi
+¦   ¦       route.js
+¦   ¦       
+¦   +---seed
+¦   ¦       route.ts
+¦   ¦       
+¦   +---upload
+¦           route.ts
+¦           
++---berita
+¦   +---[slug]
+¦           page.tsx
+¦           
++---dashboard
+¦       page.tsx
+¦       
++---detail_prestasi
+¦   +---page1
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---page2
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---page3
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---page4
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---page5
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---page6
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---page7
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---page8
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---page9
+¦           page.tsx
+¦           
++---direktori
+¦   +---guru
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---staff
+¦           page.tsx
+¦           
++---eskul
+¦   +---basketsmp
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---futsalsmp
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---hadrohsmp
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---paskibrasmp
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---pramukasmp
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---taekwondosmp
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---tarismp
+¦           page.tsx
+¦           
++---login
++---news
+¦       page.tsx
+¦       
++---organisasi
+¦       page.tsx
+¦       
++---prestasi
+¦   ¦   page.tsx
+¦   ¦   
+¦   +---[slug]
+¦           page.tsx
+¦           
++---program_unggulan
+¦   ¦   program.module.css
+¦   ¦   
+¦   +---CVS
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---EPS
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---HQ
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---WP
+¦           page.tsx
+¦           
++---register
+¦       page.tsx
+¦       
++---spmb
+¦   ¦   page.tsx
+¦   ¦   
+¦   +---daftar
+¦   ¦       page.tsx
+¦   ¦       
+¦   +---revisi
+¦           page.tsx
+¦           
++---tentang
+        page.tsx
+        tentang.css
+        

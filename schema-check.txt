@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(cuid())
+  email       String       @unique
+  password    String
+  role        String       @default("user")
+  namaLengkap String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  pendaftaran Pendaftaran?
+  sessions    Session[]
+}
+
+model Pendaftaran {
+  id                   String    @id @default(cuid())
+  userId               String    @unique
+  namaLengkap          String
+  namaPanggilan        String?
+  tempatLahir          String?
+  tanggalLahir         String?
+  ttl                  String?
+  jenisKelamin         String
+  agama                String
+  anakKe               String?
+  alamat               String
+  rt                   String?
+  rw                   String?
+  kelurahan            String?
+  kecamatan            String?
+  kabupaten            String?
+  beratBadan           String?
+  tinggiBadan          String?
+  golonganDarah        String?
+  nisn                 String?
+  nik                  String?
+  noPribadi            String?
+  ukuranSeragam        String?
+  namaPemberiReferensi String?
+  noHpReferensi        String?
+  asalSD               String?
+  asalSMP              String?
+  asalSekolah          String?
+  jurusan              String
+  namaAyah             String?
+  ttlAyah              String?
+  pendidikanAyah       String?
+  pekerjaanAyah        String?
+  penghasilanAyah      String?
+  noHpAyah             String?
+  alamatAyah           String?
+  namaIbu              String?
+  ttlIbu               String?
+  pendidikanIbu        String?
+  pekerjaanIbu         String?
+  penghasilanIbu       String?
+  noHpIbu              String?
+  alamatIbu            String?
+  namaWali             String?
+  ttlWali              String?
+  pendidikanWali       String?
+  pekerjaanWali        String?
+  penghasilanWali      String?
+  noHpWali             String?
+  alamatWali           String?
+  namaOrtu             String?
+  noOrtu               String?
+  fileIjazah           String?
+  fileAkte             String?
+  fileKK               String?
+  fileKtpOrtu          String?
+  fileKip              String?
+  fileFoto             String?
+  status               String    @default("pending")
+  nilaiSeleksi         Float?
+  nilaiTes             Float?
+  catatan              String?
+  alasanPenolakan      String?
+  jadwalTes            String?
+  lokasiTes            String?
+  infoTes              String?
+  revisiCount          Int       @default(0)
+  lastRevisiAt         DateTime?
+  pesanPengumuman      String?
+  sudahDaftarUlang     Boolean   @default(false)
+  tanggalDaftarUlang   DateTime?
+  catatanDaftarUlang   String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id             String    @id @default(cuid())
+  tokenHash      String    @unique
+  userId         String
+  lastActivityAt DateTime  @default(now())
+  expiresAt      DateTime
+  revokedAt      DateTime?
+  createdAt      DateTime  @default(now())
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model berita {
+  id         Int       @id @default(autoincrement())
+  tanggal    DateTime  @db.Date
+  judul      String
+  kategori   String    @db.VarChar(50)
+  foto_url   String
+  slug       String    @unique @db.VarChar(255)
+  excerpt    String?
+  konten     String?
+  featured   Boolean?  @default(false)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+
+  @@index([tanggal(sort: Desc)], map: "idx_berita_tanggal")
+}
+
+model guru {
+  id             Int      @id @default(autoincrement())
+  nama           String
+  mata_pelajaran String   @db.VarChar(100)
+  foto_url       String?
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model prestasi {
+  id         Int       @id @default(autoincrement())
+  tahun      String    @db.VarChar(4)
+  nama       String
+  kategori   String    @db.VarChar(50)
+  foto_url   String
+  slug       String    @unique @db.VarChar(255)
+  deskripsi  String?
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+
+  @@index([tahun], map: "idx_prestasi_tahun")
+}
+
+model staff {
+  id         Int      @id @default(autoincrement())
+  nama       String
+  jabatan    String   @db.VarChar(100)
+  foto_url   String?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+}
+
+

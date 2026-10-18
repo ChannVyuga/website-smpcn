@@ -270,7 +270,6 @@ export default function FutsalPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap');
 
         * {
           box-sizing: border-box;
@@ -281,7 +280,7 @@ export default function FutsalPage() {
         }
 
         .fts-root {
-          font-family: 'Barlow', sans-serif;
+          font-family: var(--font-barlow), sans-serif;
           background: #0A192F;
           color: #171717;
           min-height: 100vh;
@@ -463,7 +462,7 @@ export default function FutsalPage() {
           gap: 12px;
 
           font-family:
-            'Barlow Condensed',
+            var(--font-barlow-condensed),
             sans-serif;
 
           font-size: 12px;
@@ -499,7 +498,7 @@ export default function FutsalPage() {
 
         .fts-title {
           font-family:
-            'Bebas Neue',
+            var(--font-bebas),
             sans-serif;
 
           font-size:
@@ -573,7 +572,7 @@ export default function FutsalPage() {
           color: #fff;
 
           font-family:
-            'Barlow Condensed',
+            var(--font-barlow-condensed),
             sans-serif;
 
           font-size: 13px;
@@ -719,7 +718,7 @@ export default function FutsalPage() {
           position: relative;
 
           font-family:
-            'Bebas Neue',
+            var(--font-bebas),
             sans-serif;
 
           font-size: 48px;
@@ -771,7 +770,7 @@ export default function FutsalPage() {
           gap: 10px;
 
           font-family:
-            'Barlow Condensed',
+            var(--font-barlow-condensed),
             sans-serif;
 
           font-size: 11px;
@@ -802,7 +801,7 @@ export default function FutsalPage() {
 
         .fts-section-heading {
           font-family:
-            'Bebas Neue',
+            var(--font-bebas),
             sans-serif;
 
           font-size:
@@ -975,7 +974,7 @@ export default function FutsalPage() {
           z-index: 2;
 
           font-family:
-            'Barlow Condensed',
+            var(--font-barlow-condensed),
             sans-serif;
 
           font-size: 23px;
@@ -1123,7 +1122,7 @@ export default function FutsalPage() {
 
         .fts-kegiatan-no {
           font-family:
-            'Bebas Neue',
+            var(--font-bebas),
             sans-serif;
 
           font-size: 38px;
@@ -1157,7 +1156,7 @@ export default function FutsalPage() {
 
         .fts-kegiatan-nama {
           font-family:
-            'Barlow Condensed',
+            var(--font-barlow-condensed),
             sans-serif;
 
           font-size: 18px;
@@ -1271,7 +1270,7 @@ export default function FutsalPage() {
           bottom: -55px;
 
           font-family:
-            'Bebas Neue',
+            var(--font-bebas),
             sans-serif;
 
           font-size:
@@ -1328,7 +1327,7 @@ export default function FutsalPage() {
 
         .fts-cta-title {
           font-family:
-            'Bebas Neue',
+            var(--font-bebas),
             sans-serif;
 
           font-size:

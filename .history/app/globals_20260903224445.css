@@ -1,0 +1,398 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-green: #123524;
+  --primary-green-dark: #0B2A1C;
+  --primary-green-light: #1E5A3D;
+  --gold: #C8973A;
+  --gold-light: #E8B84B;
+  --cream: #FAF7F0;
+  --cream-dark: #F0EBE0;
+  --white: #FFFFFF;
+  --gray: #6B7280;
+  --gray-light: #F3F4F6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.font-display {
+  font-family: 'Playfair Display', serif;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero-gradient {
+  background: linear-gradient(160deg, #052e16 50%, #15803d 50%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-gradient::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(200,151,58,0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.hero-gradient::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    #C8973A,
+    #E8B84B,
+    #C8973A
+  );
+  pointer-events: none;
+}
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.btn-primary {
+  background: linear-gradient(135deg, #C8973A, #E8B84B);
+  color: #0A1628;
+  font-weight: 700;
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  text-decoration: none;
+  display: inline-block;
+  touch-action: manipulation;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(200,151,58,0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  color: white;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  text-decoration: none;
+  display: inline-block;
+  touch-action: manipulation;
+}
+
+.btn-outline:hover {
+  border-color: #C8973A;
+  color: #C8973A;
+  background: rgba(200,151,58,0.1);
+}
+
+/* =========================================================
+   GOLD LINE
+   ========================================================= */
+
+.gold-line {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    #C8973A,
+    #E8B84B
+  );
+  border-radius: 2px;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: white;
+  color: #0A1628;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #C8973A;
+  box-shadow: 0 0 0 3px rgba(200,151,58,0.15);
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+  touch-action: manipulation;
+}
+
+.sidebar-link:hover {
+  background: rgba(200,151,58,0.2);
+  color: #C8973A;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background: #264723;
+  color: white;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.data-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F3F4F6;
+  font-size: 14px;
+}
+
+.data-table tr:hover td {
+  background: #FAFBFC;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C8973A;
+  border-radius: 3px;
+}
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* =========================================================
+   ANIMATED GRADIENT
+   ========================================================= */
+
+.gradient-animated {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.gradient-animated::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+
+  top: 0;
+  left: -150%;
+  width: 30%;
+  height: 100%;
+
+  background: linear-gradient(
+    110deg,
+    transparent,
+    rgba(255,255,255,.25),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+  animation: glowSweep 7s ease-in-out infinite;
+}
+
+@keyframes glowSweep {
+  0% {
+    left: -150%;
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  35% {
+    left: 150%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 150%;
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   MOBILE ORGANISASI
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .org-card-left > div:first-child > div:first-child {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+::selection {
+  background: #7c8cf8;
+  color: #0b0d14;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   NAVBAR TOUCH FIX
+   ========================================================= */
+
+/*
+  Paksa navbar selalu berada di atas elemen lain
+  dan tetap menerima input touch.
+*/
+
+nav {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 999999 !important;
+  pointer-events: auto !important;
+}
+
+nav a,
+nav button {
+  pointer-events: auto !important;
+  touch-action: manipulation;
+}
+
+/*
+  Hamburger mobile
+*/
+
+.mobile-toggle {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  position: relative;
+  z-index: 1000000 !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+  Menu mobile
+*/
+
+.mobile-menu {
+  position: relative;
+  z-index: 999999 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+}
+
+.mobile-menu a,
+.mobile-menu button {
+  pointer-events: auto !important;
+  touch-action: manipulation;
+}
+
+/* =========================================================
+   NAVBAR ANIMATION
+   ========================================================= */
+
+@keyframes navLineIn {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1.15);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* =========================================================
+   BACKDROP-FILTER FALLBACK
+   ========================================================= */
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  nav {
+    background: #0B3D2E !important;
+  }
+}

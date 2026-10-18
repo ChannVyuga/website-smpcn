@@ -42,8 +42,7 @@ export default function SPMBPage() {
               Proses mudah, transparan, dan dapat dipantau secara real-time.
             </p>
             <div className="spmb-hero-btns">
-              <Link href="/register" className="btn-primary spmb-hero-btn">Daftar Sekarang</Link>
-              <Link href="/login" className="btn-outline spmb-hero-btn">Sudah Punya Akun</Link>
+              <Link href="https://spmb.citranegara.online/spmb" className="btn-primary spmb-hero-btn">Daftar Sekarang</Link>
             </div>
           </div>
         </section>
@@ -109,7 +108,7 @@ export default function SPMBPage() {
                   <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)' }}>{f}</span>
                 </div>
               ))}
-              <Link href="/register" className="btn-primary" style={{ display: 'block', textAlign: 'center', marginTop: 28, fontSize: 15 }}>
+              <Link href="https://spmb.citranegara.online/spmb" className="btn-primary" style={{ display: 'block', textAlign: 'center', marginTop: 28, fontSize: 15 }}>
                 Daftar Sekarang →
               </Link>
             </div>

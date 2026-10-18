@@ -1,53 +1,70 @@
 "use client";
 
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
-const STAFF = [
-  {
-    name: "Hanifah Fauziah",
-    label: "Assisten Tata Usaha",
-    photo: "/images/staff1.jpeg",
-  },
-  {
-    name: "Ade Susanti, S.Pdi",
-    label: "Pembina Rohis",
-    photo: "/images/staff2.jpeg",
-  },
-  {
-    name: "Neneng Rosiana, S.Pd",
-    label: "Bendahara",
-    photo: "/images/staff3.jpeg",
-  },
-  {
-    name: "Sukaryani, A.Md",
-    label: "Tata Usaha",
-    photo: "/images/staff5.jpeg",
-  },
-  {
-    name: "Iin Inayah",
-    label: "Waka Kurikulum",
-    photo: "/images/staff4.jpeg",
-  },
-  {
-    name: "Lanna Suryani, S.Pd",
-    label: "Bimbingan Konseling",
-    photo: "/images/staff6.jpeg",
-  },
-  {
-    name: "Irma Anggraeni, M.Pd",
-    label: "Waka Humas",
-    photo: "/images/staff7.jpeg",
-  },
-  {
-    name: "Decky Ryansyah, M.Kom",
-    label: "Kepala IT",
-    photo: "/images/staff8.jpeg",
-  },
-];
+type Staff = {
+  id: number;
+  name: string;
+  label: string;
+  photo: string;
+};
 
 export default function StaffPage() {
+
+    const [staffList, setStaffList] = useState<Staff[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function fetchStaff() {
+      try {
+        const response = await fetch("/api/staff");
+
+        if (!response.ok) {
+          throw new Error("Gagal memuat data staff.");
+        }
+
+        const data: Staff[] = await response.json();
+        setStaffList(data);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Terjadi kesalahan."
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchStaff();
+  }, []);
+
+  // Scroll reveal untuk card, dijalankan ulang setelah data staff dimuat
+  const gridRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const els = gridRef.current?.querySelectorAll<HTMLElement>(".st-card");
+    if (!els || els.length === 0) return;
+    if (!("IntersectionObserver" in window)) {
+      els.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [staffList]);
+
   return (
     <>
       <Navbar />
@@ -76,35 +93,46 @@ export default function StaffPage() {
               <p className="st-subtitle">SMP CITRA NEGARA</p>
             </div>
 
-            <div className="st-grid">
-              {STAFF.map((staff) => (
-                <article key={staff.name} className="st-card">
-                  <div className="st-photo-frame">
-                    <Image
-                      src={staff.photo}
-                      alt={`Foto ${staff.name}`}
-                      fill
-                      sizes="
-                        (max-width: 600px) 44vw,
-                        (max-width: 800px) 30vw,
-                        (max-width: 1050px) 23vw,
-                        220px
-                      "
-                      quality={75}
-                      style={{ objectFit: "cover" }}
-                    />
 
-                    <div className="st-overlay" />
+            <div className="st-grid" ref={gridRef}>
+              {loading ? (
+                Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="st-skeleton" aria-hidden="true" />
+                ))
+              ) : error ? (
+                <p>{error}</p>
+              ) : staffList.length === 0 ? (
+                <p>Belum ada data staff.</p>
+              ) : (
+                staffList.map((staff, index) => (
+                  <article
+                    key={staff.id}
+                    className="st-card"
+                    style={{ "--d": `${(index % 5) * 90}ms` } as CSSProperties}
+                  >
+                    <div className="st-photo-frame">
+                      <Image
+                        loading={index === 0 ? "eager" : "lazy"}
+                        src={staff.photo}
+                        alt={`Foto ${staff.name}`}
+                        fill
+                        className="st-photo-img"
+                        sizes="(max-width: 600px) 44vw, (max-width: 800px) 30vw, (max-width: 1050px) 23vw, 220px"
+                        quality={75}
+                        style={{ objectFit: "cover" }}
+                      />
+                    </div>
 
                     <div className="st-info">
                       <p className="st-name">{staff.name}</p>
-                      <p className="st-label">{staff.label}</p>
+                      <p className="st-label">
+                        <span className="st-dot" />
+                        {staff.label}
+                      </p>
                     </div>
-                  </div>
-
-                  <div className="st-accent" />
-                </article>
-              ))}
+                  </article>
+                ))
+              )}
             </div>
           </div>
         </section>
@@ -182,8 +210,29 @@ export default function StaffPage() {
 
         /* CARD */
         .st-card {
-          position: relative;
           min-width: 0;
+          background: #fff;
+          border: 1px solid #efe9dc;
+          border-radius: 20px;
+          padding: 7px;
+          box-shadow: 0 1px 2px rgba(10, 22, 40, 0.04);
+          opacity: 0;
+          transition:
+            transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+            box-shadow 0.45s ease,
+            border-color 0.45s ease;
+        }
+
+        .st-card.is-visible {
+          opacity: 1;
+          animation: st-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) backwards;
+        }
+
+        @keyframes st-in {
+          from {
+            opacity: 0;
+            transform: translateY(24px);
+          }
         }
 
         /* Trik menengahkan 3 kartu terakhir (baris ke-2 dari 8 item)
@@ -202,61 +251,90 @@ export default function StaffPage() {
 
         .st-photo-frame {
           position: relative;
-          z-index: 1;
           width: 100%;
-          aspect-ratio: 3 / 4;
+          aspect-ratio: 4 / 5;
           overflow: hidden;
-          border: 3px solid #fff;
           border-radius: 14px;
-          background: #eee;
-          box-shadow: 0 5px 18px rgba(10, 22, 40, 0.1);
+          background: #f5f1e8;
         }
 
-        .st-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to top,
-            rgba(10, 22, 40, 0.82),
-            rgba(10, 22, 40, 0.18) 45%,
-            transparent 70%
-          );
-          pointer-events: none;
+        .st-photo-img {
+          transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
         }
 
         .st-info {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          padding: 14px 12px;
+          padding: 12px 6px 7px;
+          text-align: center;
         }
 
         .st-name {
           margin: 0;
-          color: #fff;
-          font-size: 13px;
-          font-weight: 800;
-          line-height: 1.3;
+          color: #0a1628;
+          font-size: 14px;
+          font-weight: 700;
+          line-height: 1.35;
         }
 
         .st-label {
-          margin: 3px 0 0;
-          color: #e8b84b;
-          font-size: 10px;
-          font-weight: 600;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          margin: 4px 0 0;
+          color: #8c7b5a;
+          font-size: 11.5px;
+          font-weight: 500;
           line-height: 1.3;
         }
 
-        .st-accent {
-          position: absolute;
-          right: -7px;
-          bottom: -7px;
-          z-index: 0;
-          width: 100%;
-          height: 100%;
-          border-radius: 14px;
-          background: linear-gradient(135deg, #c8973a, #e8b84b);
+        .st-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: #c8973a;
+          flex-shrink: 0;
+          transition: transform 0.45s ease;
+        }
+
+        /* Hover hanya untuk perangkat dengan mouse */
+        @media (hover: hover) {
+          .st-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(200, 151, 58, 0.35);
+            box-shadow: 0 18px 40px -12px rgba(10, 22, 40, 0.18);
+          }
+
+          .st-card:hover .st-photo-img {
+            transform: scale(1.05);
+          }
+
+          .st-card:hover .st-dot {
+            transform: scale(1.6);
+          }
+        }
+
+        /* Umpan balik saat card disentuh di layar sentuh */
+        @media (hover: none) {
+          .st-card:active {
+            transform: scale(0.98);
+          }
+        }
+
+        /* Skeleton saat data dimuat */
+        .st-skeleton {
+          aspect-ratio: 4 / 5.9;
+          border-radius: 20px;
+          background: linear-gradient(100deg, #f3eee3 30%, #fbf8f1 50%, #f3eee3 70%);
+          background-size: 200% 100%;
+          animation: st-shimmer 1.3s linear infinite;
+        }
+
+        @keyframes st-shimmer {
+          from {
+            background-position: 150% 0;
+          }
+          to {
+            background-position: -50% 0;
+          }
         }
 
         /* TABLET: 4 kolom — reset trik centering 5-kolom */
@@ -308,26 +386,25 @@ export default function StaffPage() {
             gap: 22px 14px;
           }
 
-          .st-photo-frame {
-            border-radius: 12px;
+          .st-card {
+            padding: 6px;
+            border-radius: 18px;
           }
 
-          .st-accent {
-            right: -5px;
-            bottom: -5px;
-            border-radius: 12px;
+          .st-photo-frame {
+            border-radius: 13px;
           }
 
           .st-info {
-            padding: 11px 9px;
+            padding: 10px 4px 6px;
           }
 
           .st-name {
-            font-size: 11px;
+            font-size: 13px;
           }
 
           .st-label {
-            font-size: 9px;
+            font-size: 11px;
           }
         }
 
@@ -342,19 +419,29 @@ export default function StaffPage() {
           }
 
           .st-name {
-            font-size: 10px;
+            font-size: 12px;
           }
 
           .st-label {
-            font-size: 8px;
+            font-size: 10px;
           }
         }
 
         /* DEVICE DENGAN REDUCED MOTION */
         @media (prefers-reduced-motion: reduce) {
           .st-card,
-          .st-photo-frame {
+          .st-card.is-visible {
+            opacity: 1;
+            animation: none;
             transition: none;
+          }
+
+          .st-photo-img {
+            transition: none;
+          }
+
+          .st-skeleton {
+            animation: none;
           }
         }
       `}</style>

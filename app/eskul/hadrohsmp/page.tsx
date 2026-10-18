@@ -172,7 +172,6 @@ export default function IrmaPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap');
 
         * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -190,7 +189,7 @@ export default function IrmaPage() {
           --had-ink: #14181A;
           --had-paper: #F6F8F6;
 
-          font-family: 'Barlow', sans-serif;
+          font-family: var(--font-barlow), sans-serif;
           background: var(--had-paper);
           color: var(--had-ink);
           min-height: 100vh;
@@ -278,7 +277,7 @@ export default function IrmaPage() {
           display: inline-flex;
           align-items: center;
           gap: 12px;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 12px;
           font-weight: 700;
           letter-spacing: 3px;
@@ -296,7 +295,7 @@ export default function IrmaPage() {
         }
 
         .had-title {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(90px, 15vw, 190px);
           line-height: 0.8;
           letter-spacing: 3px;
@@ -326,7 +325,7 @@ export default function IrmaPage() {
           background: rgba(21,148,71,0.10);
           backdrop-filter: blur(10px);
           color: #fff;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 13px;
           font-weight: 800;
           letter-spacing: 1.5px;
@@ -387,7 +386,7 @@ export default function IrmaPage() {
 
         .had-stat-num {
           position: relative;
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: 48px;
           line-height: 1;
           color: #FFFFFF;
@@ -414,7 +413,7 @@ export default function IrmaPage() {
           display: flex;
           align-items: center;
           gap: 10px;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 11px;
           font-weight: 800;
           letter-spacing: 3px;
@@ -431,7 +430,7 @@ export default function IrmaPage() {
         }
 
         .had-section-heading {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(48px, 6vw, 72px);
           color: var(--had-ink);
           line-height: 0.95;
@@ -510,7 +509,7 @@ export default function IrmaPage() {
         .had-tujuan-title {
           position: relative;
           z-index: 2;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 23px;
           font-weight: 800;
           color: var(--had-ink);
@@ -586,7 +585,7 @@ export default function IrmaPage() {
         }
 
         .had-kegiatan-no {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: 38px;
           line-height: 1;
           color: var(--had-green);
@@ -604,7 +603,7 @@ export default function IrmaPage() {
         }
 
         .had-kegiatan-nama {
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 18px;
           font-weight: 800;
           color: #222;
@@ -661,7 +660,7 @@ export default function IrmaPage() {
           content: 'HADROH';
           position: absolute;
           right: -30px; bottom: -55px;
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(110px, 16vw, 240px);
           color: rgba(255,255,255,0.04);
           line-height: 1;
@@ -689,7 +688,7 @@ export default function IrmaPage() {
         }
 
         .had-cta-title {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(45px, 5vw, 68px);
           color: #fff;
           line-height: 0.9;
@@ -713,7 +712,7 @@ export default function IrmaPage() {
           gap: 10px;
           background: linear-gradient(135deg, var(--had-gold), var(--had-gold-dark));
           color: #fff;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 14px;
           font-weight: 800;
           letter-spacing: 1.5px;

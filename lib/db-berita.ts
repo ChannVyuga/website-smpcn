@@ -1,0 +1,1 @@
+import { neon } from '@neondatabase/serverless'; if (!process.env.BERITA_DATABASE_URL) { throw new Error('BERITA_DATABASE_URL belum di-set. Cek file .env kamu.'); } export const sqlBerita = neon(process.env.BERITA_DATABASE_URL);

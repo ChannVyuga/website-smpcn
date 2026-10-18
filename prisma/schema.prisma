@@ -17,12 +17,13 @@ model User {
   updatedAt   DateTime @updatedAt
 
   pendaftaran Pendaftaran?
+  sessions    Session[]
 }
 
 model Pendaftaran {
-  id            String   @id @default(cuid())
-  userId        String   @unique
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   namaLengkap          String
   namaPanggilan        String?
@@ -48,65 +49,79 @@ model Pendaftaran {
   namaPemberiReferensi String?
   noHpReferensi        String?
 
-  asalSD               String?
-  asalSMP              String?
-  asalSekolah          String?
-  jurusan              String
+  asalSD      String?
+  asalSMP     String?
+  asalSekolah String?
+  jurusan     String
 
-  namaAyah             String?
-  ttlAyah              String?
-  pendidikanAyah       String?
-  pekerjaanAyah        String?
-  penghasilanAyah      String?
-  noHpAyah             String?
-  alamatAyah           String?
+  namaAyah        String?
+  ttlAyah         String?
+  pendidikanAyah  String?
+  pekerjaanAyah   String?
+  penghasilanAyah String?
+  noHpAyah        String?
+  alamatAyah      String?
 
-  namaIbu              String?
-  ttlIbu               String?
-  pendidikanIbu        String?
-  pekerjaanIbu         String?
-  penghasilanIbu       String?
-  noHpIbu              String?
-  alamatIbu            String?
+  namaIbu        String?
+  ttlIbu         String?
+  pendidikanIbu  String?
+  pekerjaanIbu   String?
+  penghasilanIbu String?
+  noHpIbu        String?
+  alamatIbu      String?
 
-  namaWali             String?
-  ttlWali              String?
-  pendidikanWali       String?
-  pekerjaanWali        String?
-  penghasilanWali      String?
-  noHpWali             String?
-  alamatWali           String?
+  namaWali        String?
+  ttlWali         String?
+  pendidikanWali  String?
+  pekerjaanWali   String?
+  penghasilanWali String?
+  noHpWali        String?
+  alamatWali      String?
 
-  namaOrtu             String?
-  noOrtu               String?
+  namaOrtu String?
+  noOrtu   String?
 
-  fileIjazah           String?
-  fileAkte             String?
-  fileKK               String?
-  fileKtpOrtu          String?
-  fileKip              String?
-  fileFoto             String?
+  fileIjazah  String?
+  fileAkte    String?
+  fileKK      String?
+  fileKtpOrtu String?
+  fileKip     String?
+  fileFoto    String?
 
-  status               String   @default("pending")
+  status String @default("pending")
 
-  nilaiSeleksi         Float?
-  nilaiTes             Float?
-  catatan              String?
-  alasanPenolakan      String?
+  nilaiSeleksi    Float?
+  nilaiTes        Float?
+  catatan         String?
+  alasanPenolakan String?
 
-  jadwalTes            String?
-  lokasiTes            String?
-  infoTes              String?
+  jadwalTes String?
+  lokasiTes String?
+  infoTes   String?
 
-  revisiCount          Int      @default(0)
-  lastRevisiAt         DateTime?
+  revisiCount  Int       @default(0)
+  lastRevisiAt DateTime?
 
-  pesanPengumuman      String?
+  pesanPengumuman String?
 
-  sudahDaftarUlang     Boolean  @default(false)
-  tanggalDaftarUlang   DateTime?
-  catatanDaftarUlang   String?
+  sudahDaftarUlang   Boolean   @default(false)
+  tanggalDaftarUlang DateTime?
+  catatanDaftarUlang String?
 
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id             String    @id @default(cuid())
+  tokenHash      String    @unique
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastActivityAt DateTime  @default(now())
+  expiresAt      DateTime
+  revokedAt      DateTime?
+  createdAt      DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
 }

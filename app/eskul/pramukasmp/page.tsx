@@ -172,13 +172,12 @@ export default function PramukaPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap');
 
         * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
 
         .psk-root {
-          font-family: 'Barlow', sans-serif;
+          font-family: var(--font-barlow), sans-serif;
           background: #F4F6F0;
           color: #171717;
           min-height: 100vh;
@@ -266,7 +265,7 @@ export default function PramukaPage() {
           display: inline-flex;
           align-items: center;
           gap: 12px;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 12px;
           font-weight: 700;
           letter-spacing: 3px;
@@ -284,7 +283,7 @@ export default function PramukaPage() {
         }
 
         .psk-title {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(90px, 15vw, 190px);
           line-height: 0.8;
           letter-spacing: 3px;
@@ -314,7 +313,7 @@ export default function PramukaPage() {
           background: rgba(196,139,87,0.08);
           backdrop-filter: blur(10px);
           color: #fff;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 13px;
           font-weight: 800;
           letter-spacing: 1.5px;
@@ -375,7 +374,7 @@ export default function PramukaPage() {
 
         .psk-stat-num {
           position: relative;
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: 48px;
           line-height: 1;
           color: #C8973A;
@@ -402,7 +401,7 @@ export default function PramukaPage() {
           display: flex;
           align-items: center;
           gap: 10px;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 11px;
           font-weight: 800;
           letter-spacing: 3px;
@@ -419,7 +418,7 @@ export default function PramukaPage() {
         }
 
         .psk-section-heading {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(48px, 6vw, 72px);
           color: #171717;
           line-height: 0.95;
@@ -498,7 +497,7 @@ export default function PramukaPage() {
         .psk-tujuan-title {
           position: relative;
           z-index: 2;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 23px;
           font-weight: 800;
           color: #171717;
@@ -574,7 +573,7 @@ export default function PramukaPage() {
         }
 
         .psk-kegiatan-no {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: 38px;
           line-height: 1;
           color: #C48B57;
@@ -592,7 +591,7 @@ export default function PramukaPage() {
         }
 
         .psk-kegiatan-nama {
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 18px;
           font-weight: 800;
           color: #222;
@@ -649,7 +648,7 @@ export default function PramukaPage() {
           content: 'PRAMUKA';
           position: absolute;
           right: -30px; bottom: -55px;
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(130px, 20vw, 280px);
           color: rgba(255,255,255,0.025);
           line-height: 1;
@@ -677,7 +676,7 @@ export default function PramukaPage() {
         }
 
         .psk-cta-title {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(45px, 5vw, 68px);
           color: #fff;
           line-height: 0.9;
@@ -701,7 +700,7 @@ export default function PramukaPage() {
           gap: 10px;
           background: #C48B57;
           color: #fff;
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 14px;
           font-weight: 800;
           letter-spacing: 1.5px;

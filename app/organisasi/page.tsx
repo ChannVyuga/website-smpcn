@@ -275,7 +275,7 @@ export default function OrganisasiPage() {
 
                   <div style={{ marginTop: 28 }}>
                     <Link
-                      href="/register"
+                      href="https://spmb.citranegara.online/spmb"
                       style={{
                         display: "block",
                         textAlign: "center",
@@ -444,7 +444,7 @@ export default function OrganisasiPage() {
                 Daftar SPMB Sekarang
               </Link>
               <Link
-                href="/spmb"
+                href="https://spmb.citranegara.online/spmb"
                 className="btn-outline"
                 style={{ fontSize: 16 }}
               >

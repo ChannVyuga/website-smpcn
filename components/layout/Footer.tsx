@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { GraduationCap, Phone, Mail, MapPin, Share2, MessageCircle, Play, Clock1, Clock2Icon, Clock12Icon } from 'lucide-react';
@@ -32,6 +34,7 @@ export default function Footer() {
                   src="/images/smpcn.png"
                   alt="Logo SMP Citra Negara"
                   fill
+                  sizes="50px"
                   style={{
                     objectFit: 'contain',
                   }}
@@ -154,8 +157,7 @@ export default function Footer() {
             {[
               { href: '/', label: 'Beranda' },
               { href: '/tentang', label: 'Tentang Kami' },
-              { href: '/spmb', label: 'SPMB Online' },
-              { href: '/login', label: 'Login Siswa' },
+              { href: '/https://spmb.citranegara.online/spmb', label: 'SPMB Online' },
             ].map(link => (
               <Link key={link.href} href={link.href} style={{
                 display: 'block', color: 'rgba(255,255,255,0.6)',
@@ -240,7 +242,10 @@ export default function Footer() {
             © 2026 SMP Citra Negara. All rights reserved.
           </p>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>
-            ©2026 NeyYoniChan | rights reserved, no negotiations
+            Coded By{' '}
+            <a style={{ color: '#808080', textDecoration: 'none' }} href="https://www.instagram.com/chanezekiel_/">
+                Chantique Putri Virgianty
+            </a>
           </p>
         </div>
       </div>

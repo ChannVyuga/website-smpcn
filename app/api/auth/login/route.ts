@@ -1,54 +1,60 @@
-import { NextResponse } from 'next/server'
-import bcrypt from 'bcryptjs'
-import { prisma, seedIfEmpty } from '@/lib/db'
-import { createToken } from '@/lib/auth'
-import { cookies } from 'next/headers'
+
+import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import { prisma } from '@/lib/db';
+import { createToken, SESSION_IDLE_SECONDS } from '@/lib/auth';
+import { cookies } from 'next/headers';
 
 export async function POST(req: Request) {
   try {
-    // Buat admin default kalau belum ada
-    await seedIfEmpty()
-
-    const { email, password } = await req.json()
+    const body = await req.json();
+    const email =
+      typeof body.email === 'string' ? body.email.trim() : '';
+    const password =
+      typeof body.password === 'string' ? body.password : '';
 
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email dan password wajib diisi' },
         { status: 400 }
-      )
+      );
     }
 
-    const user = await prisma.user.findUnique({ where: { email } })
-    if (!user) {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return NextResponse.json(
         { error: 'Email atau password salah' },
         { status: 401 }
-      )
+      );
     }
 
-    const valid = await bcrypt.compare(password, user.password)
-    if (!valid) {
+    // Login hanya untuk admin (fitur akun pendaftar sudah tidak dipakai)
+    if (user.role !== 'admin') {
       return NextResponse.json(
-        { error: 'Email atau password salah' },
-        { status: 401 }
-      )
+        { error: 'Akun ini tidak memiliki akses admin' },
+        { status: 403 }
+      );
     }
 
     const token = await createToken({
       userId: user.id,
       email: user.email,
-      role: user.role as 'user' | 'admin',
+      role: user.role,
       namaLengkap: user.namaLengkap ?? undefined,
-    })
+    });
 
-    const cookieStore = await cookies()
+    const cookieStore = await cookies();
+
     cookieStore.set('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 hari
+      maxAge: SESSION_IDLE_SECONDS,
       path: '/',
-    })
+    });
 
     return NextResponse.json({
       success: true,
@@ -58,12 +64,13 @@ export async function POST(req: Request) {
         role: user.role,
         namaLengkap: user.namaLengkap,
       },
-    })
+    });
   } catch (err) {
-    console.error('Login error:', err)
+    console.error('Login error:', err);
+
     return NextResponse.json(
       { error: 'Terjadi kesalahan server' },
       { status: 500 }
-    )
+    );
   }
 }

@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -142,19 +143,172 @@ const CSS = `
     .home-program-grid { grid-template-columns: 1fr; }
     .home-fasilitas-stats { grid-template-columns: 1fr; }
   }
+
+  /* ===== Animasi ===== */
+  .home-main { overflow-x: clip; }
+
+  /* Elemen .reveal tersembunyi sampai masuk viewport, lalu diberi .is-visible.
+     Pakai animation (bukan transition) + fill-mode backwards supaya tidak
+     bentrok dengan transform/transition inline (mis. hover kartu program). */
+  .reveal { opacity: 0; --rv-dist: 40px; --anim: rv-up; }
+  .reveal.is-visible {
+    opacity: 1;
+    animation: var(--anim) 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) backwards;
+  }
+  .reveal-left  { --anim: rv-left; }
+  .reveal-right { --anim: rv-right; }
+  .reveal-zoom  { --anim: rv-zoom; }
+
+  @keyframes rv-up    { from { opacity: 0; transform: translateY(var(--rv-dist)); } }
+  @keyframes rv-left  { from { opacity: 0; transform: translateX(calc(var(--rv-dist) * -1)); } }
+  @keyframes rv-right { from { opacity: 0; transform: translateX(var(--rv-dist)); } }
+  @keyframes rv-zoom  { from { opacity: 0; transform: translateY(calc(var(--rv-dist) / 2)) scale(0.92); } }
+
+  /* Kartu jadwal melayang pelan setelah muncul */
+  .home-timeline-card.reveal.is-visible {
+    animation:
+      var(--anim) 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) backwards,
+      home-float 6s ease-in-out 1.4s infinite;
+  }
+  @keyframes home-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* Denyut pada nomor gelombang yang sedang aktif */
+  .home-dot-active { animation: home-pulse 2s ease-out infinite; }
+  @keyframes home-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(232,184,75,0.55); }
+    70%  { box-shadow: 0 0 0 10px rgba(232,184,75,0); }
+    100% { box-shadow: 0 0 0 0 rgba(232,184,75,0); }
+  }
+
+  @media (max-width: 900px) {
+    /* Di layar sempit semua muncul dari bawah agar tidak geser ke samping */
+    .reveal-left, .reveal-right { --anim: rv-up; }
+  }
+  @media (max-width: 640px) {
+    .reveal { --rv-dist: 24px; }
+    .reveal.is-visible { animation-duration: 0.6s; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal.is-visible { opacity: 1; animation: none !important; }
+    .home-dot-active { animation: none; }
+  }
 `;
 
+const d = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
+
+function useScrollReveal() {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const els = ref.current?.querySelectorAll<HTMLElement>(".reveal");
+    if (!els) return;
+    if (!("IntersectionObserver" in window)) {
+      els.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+  return ref;
+}
+
+// Angka berjalan dari 0 ke nilai akhir saat terlihat. Teks non-angka (mis. "A") tampil apa adanya.
+function CountUp({ value }: { value: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [text, setText] = useState(value);
+  useEffect(() => {
+    const m = value.match(/^([\d.]+)(.*)$/);
+    const el = ref.current;
+    if (!m || !el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const grouped = m[1].includes(".");
+    const target = Number(m[1].replace(/\./g, ""));
+    const suffix = m[2];
+    const fmt = (n: number) => (grouped ? n.toLocaleString("id-ID") : String(n)) + suffix;
+    let raf = 0;
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      const start = performance.now();
+      const dur = 1600;
+      const tick = (t: number) => {
+        const p = Math.min((t - start) / dur, 1);
+        setText(fmt(Math.round(target * (1 - Math.pow(1 - p, 3)))));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      setText(fmt(0));
+      raf = requestAnimationFrame(tick);
+    });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, [value]);
+  return <span ref={ref}>{text}</span>;
+}
+
+const BULAN = [
+  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+  "Juli", "Agustus", "September", "Oktober", "November", "Desember",
+];
+
+function formatTanggal(d: Date) {
+  return `${d.getDate()} ${BULAN[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+// Siklus SPMB berjalan September (tahun Y) s/d Juni (tahun Y+1).
+// Mulai Juli, jadwal otomatis pindah ke siklus tahun berikutnya.
+function getJadwalSPMB(now: Date = new Date()) {
+  const tahun = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1;
+  const gelombang = [
+    { fase: "Gelombang 1", mulai: new Date(tahun, 8, 1), selesai: new Date(tahun, 11, 1) },
+    { fase: "Gelombang 2", mulai: new Date(tahun, 11, 1), selesai: new Date(tahun + 1, 3, 30) },
+    { fase: "Gelombang 3", mulai: new Date(tahun + 1, 4, 1), selesai: new Date(tahun + 1, 5, 30) },
+  ];
+  // Gelombang aktif: yang pertama di mana hari ini <= tanggal selesai dan >= tanggal mulai
+  const idxAktif = gelombang.findIndex(
+    (g) => now >= g.mulai && now < new Date(g.selesai.getFullYear(), g.selesai.getMonth(), g.selesai.getDate() + 1),
+  );
+  return {
+    tahun,
+    tahunAjaran: `${tahun + 1}/${tahun + 2}`,
+    items: gelombang.map((g, i) => ({
+      fase: g.fase,
+      tanggal: `${formatTanggal(g.mulai)} - ${formatTanggal(g.selesai)}`,
+      aktif: i === idxAktif,
+    })),
+  };
+}
+
 export default function HomePage() {
+  const jadwal = getJadwalSPMB();
+  const mainRef = useScrollReveal();
   return (
     <>
       <style>{CSS}</style>
       <Navbar />
-      <main>
+      <main ref={mainRef} className="home-main">
         {/* HERO */}
         <section className="hero-gradient home-hero-section">
           <div className="home-hero-grid">
             <div>
               <div
+                className="reveal"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -172,15 +326,17 @@ export default function HomePage() {
                 <Star size={12} fill="#E8B84B" /> PENERIMAAN PESERTA DIDIK BARU
               </div>
               <h1
-                className="font-display home-hero-title"
-                style={{ color: "white" }}
+                className="font-display home-hero-title reveal"
+                style={{ ...d(120), color: "white" }}
               >
                 Raih Masa Depan{" "}
                 <span style={{ color: "#E8B84B" }}>Cerah Bersama</span> SMP
                 Citra Negara
               </h1>
               <p
+                className="reveal"
                 style={{
+                  ...d(240),
                   color: "rgba(255,255,255,0.75)",
                   fontSize: 17,
                   lineHeight: 1.7,
@@ -191,9 +347,12 @@ export default function HomePage() {
                 Bergabunglah dengan ribuan alumni sukses. Pendidikan kejuruan
                 berkualitas tinggi dengan kurikulum industri terkini.
               </p>
-              <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+              <div
+                className="reveal"
+                style={{ ...d(360), display: "flex", gap: 16, flexWrap: "wrap" }}
+              >
                 <Link
-                  href="/spmb"
+                  href="https://spmb.citranegara.online/spmb"
                   className="btn-primary"
                   style={{ fontSize: 15 }}
                 >
@@ -208,8 +367,8 @@ export default function HomePage() {
                 </Link>
               </div>
               <div className="home-hero-stats">
-                {STATS.map((s) => (
-                  <div key={s.label}>
+                {STATS.map((s, i) => (
+                  <div key={s.label} className="reveal" style={d(480 + i * 120)}>
                     <div
                       className="font-display"
                       style={{
@@ -218,7 +377,7 @@ export default function HomePage() {
                         fontWeight: 700,
                       }}
                     >
-                      {s.value}
+                      <CountUp value={s.value} />
                     </div>
                     <div
                       style={{ color: "rgba(255,255,255,0.6)", fontSize: 12 }}
@@ -233,8 +392,9 @@ export default function HomePage() {
             {/* Timeline Card */}
             <div className="home-timeline-wrap">
               <div
-                className="home-timeline-card"
+                className="home-timeline-card reveal reveal-right"
                 style={{
+                  ...d(200),
                   background: "rgba(255,255,255,0.06)",
                   backdropFilter: "blur(20px)",
                   border: "1px solid rgba(200,151,58,0.3)",
@@ -245,7 +405,7 @@ export default function HomePage() {
                   className="font-display"
                   style={{ color: "white", fontSize: 22, marginBottom: 6 }}
                 >
-                  Jadwal SPMB
+                  Jadwal SPMB {jadwal.tahun}
                 </h3>
                 <p
                   style={{
@@ -254,37 +414,24 @@ export default function HomePage() {
                     marginBottom: 24,
                   }}
                 >
+                  Tahun Ajaran {jadwal.tahunAjaran}
                 </p>
-                {[
-                  {
-                    fase: "Pembukaan Pendaftaran",
-                    aktif: true,
-                  },
-                  {
-                    fase: "Verifikasi Berkas",
-                    aktif: false,
-                  },
-                  {
-                    fase: "Seleksi & Pengumuman",
-                    aktif: false,
-                  },
-                  {
-                    fase: "Daftar Ulang",
-                    aktif: false,
-                  },
-                ].map((item, i) => (
+                {jadwal.items.map((item, i) => (
                   <div
                     key={i}
+                    className="reveal reveal-left"
                     style={{
+                      ...d(500 + i * 130),
                       display: "flex",
                       alignItems: "flex-start",
                       gap: 14,
                       padding: "12px 0",
                       borderBottom:
-                        i < 3 ? "1px solid rgba(255,255,255,0.08)" : "none",
+                        i < jadwal.items.length - 1 ? "1px solid rgba(255,255,255,0.08)" : "none",
                     }}
                   >
                     <div
+                      className={item.aktif ? "home-dot-active" : undefined}
                       style={{
                         width: 32,
                         height: 32,
@@ -322,14 +469,16 @@ export default function HomePage() {
                           marginTop: 2,
                         }}
                       >
+                        {item.tanggal}
                       </div>
                     </div>
                   </div>
                 ))}
                 <Link
-                  href="/register"
-                  className="btn-primary"
+                  href="https://spmb.citranegara.online/spmb"
+                  className="btn-primary reveal"
                   style={{
+                    ...d(900),
                     display: "block",
                     textAlign: "center",
                     marginTop: 24,
@@ -346,7 +495,7 @@ export default function HomePage() {
         {/* Program Unggulan */}
         <section style={{ padding: "80px 24px", background: "white" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <div className="reveal" style={{ textAlign: "center", marginBottom: 56 }}>
               <div className="gold-line" style={{ margin: "0 auto 16px" }} />
               <h2
                 className="font-display home-section-heading"
@@ -366,11 +515,13 @@ export default function HomePage() {
               </p>
             </div>
             <div className="home-program-grid">
-              {PROGRAM_UNGGULAN.map((j) => (
+              {PROGRAM_UNGGULAN.map((j, i) => (
                 <Link
                   key={j.kode}
                   href={j.href}
+                  className="reveal reveal-zoom"
                   style={{
+                    ...d(i * 110),
                     background: "white",
                     border: "1.5px solid #F0EBE0",
                     borderRadius: 14,
@@ -461,6 +612,7 @@ export default function HomePage() {
         <section style={{ padding: "80px 24px", background: "#FAF7F0" }}>
           <div className="home-fasilitas-grid">
             <div>
+              <div className="reveal reveal-left">
               <div className="gold-line" style={{ marginBottom: 16 }} />
               <h2
                 className="font-display home-section-heading"
@@ -479,6 +631,7 @@ export default function HomePage() {
                 Lingkungan belajar terbaik dengan fasilitas modern yang
                 mendukung proses pembelajaran berkualitas tinggi.
               </p>
+              </div>
               {[
                 "Tersedia Lab Untuk Siswa/i SMP Citra Negara",
                 "Tersedia WiFi Untuk Siswa/i di Setiap Gedung & Lantai",
@@ -489,7 +642,9 @@ export default function HomePage() {
               ].map((f, i) => (
                 <div
                   key={i}
+                  className="reveal reveal-left"
                   style={{
+                    ...d(150 + i * 80),
                     display: "flex",
                     alignItems: "center",
                     gap: 12,
@@ -534,7 +689,9 @@ export default function HomePage() {
               ].map((item, i) => (
                 <div
                   key={i}
+                  className="reveal reveal-zoom"
                   style={{
+                    ...d(i * 120),
                     background: item.bg,
                     borderRadius: 16,
                     padding: 28,
@@ -558,7 +715,7 @@ export default function HomePage() {
                       color: item.bg === "#C8973A" ? "#0A1628" : "#E8B84B",
                     }}
                   >
-                    {item.val}
+                    <CountUp value={item.val} />
                   </div>
                   <div
                     style={{
@@ -582,13 +739,15 @@ export default function HomePage() {
         <section style={{ padding: "80px 24px", background: "#15803d" }}>
           <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
             <h2
-              className="font-display home-cta-heading"
+              className="font-display home-cta-heading reveal"
               style={{ color: "white", marginBottom: 16 }}
             >
               Siap Bergabung?
             </h2>
             <p
+              className="reveal"
               style={{
+                ...d(120),
                 color: "rgba(255,255,255,0.65)",
                 fontSize: 16,
                 lineHeight: 1.7,
@@ -599,7 +758,9 @@ export default function HomePage() {
               dibuka. Jangan lewatkan kesempatan ini!
             </p>
             <div
+              className="reveal reveal-zoom"
               style={{
+                ...d(240),
                 display: "flex",
                 gap: 16,
                 justifyContent: "center",
@@ -607,14 +768,14 @@ export default function HomePage() {
               }}
             >
               <Link
-                href="/register"
+                href="https://spmb.citranegara.online/spmb"
                 className="btn-primary"
                 style={{ fontSize: 16 }}
               >
                 Daftar Sekarang
               </Link>
               <Link
-                href="/spmb"
+                href="https://spmb.citranegara.online/spmb"
                 className="btn-outline"
                 style={{ fontSize: 16 }}
               >

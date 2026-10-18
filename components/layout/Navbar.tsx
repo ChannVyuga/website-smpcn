@@ -1166,7 +1166,7 @@ export default function Navbar() {
         response.json()
       )
       .then((data) => {
-        if (data?.user) {
+        if (data?.user?.role === "admin") {
           setSession(data.user);
         }
       })
@@ -1331,10 +1331,7 @@ export default function Navbar() {
     setEskulOpen(false);
   };
 
-  const dashboardHref =
-    session?.role === "admin"
-      ? "/admin/dashboard"
-      : "/dashboard";
+  const dashboardHref = "/admin/dashboard";
 
   /* =======================================================
      RETURN
@@ -1394,6 +1391,7 @@ export default function Navbar() {
                     alt="Logo SMP Citra Negara"
                     width={44}
                     height={44}
+                    sizes="44px"
                     priority
                     style={{
                       width: "100%",
@@ -1801,7 +1799,7 @@ export default function Navbar() {
                   Berita
                 </NavLink>
 
-                <NavLink href="/spmb">
+                <NavLink href="https://spmb.citranegara.online/spmb">
                   SPMB
                 </NavLink>
               </div>
@@ -1878,49 +1876,6 @@ export default function Navbar() {
                   </>
                 ) : (
                   <>
-                    <Link
-                      href="/login"
-                      style={{
-                        color:
-                          "var(--nav-text)",
-
-                        textDecoration:
-                          "none",
-
-                        fontSize: 13,
-
-                        fontWeight: 600,
-
-                        padding:
-                          "8px 6px",
-
-                        whiteSpace:
-                          "nowrap",
-                      }}
-                    >
-                      Masuk
-                    </Link>
-
-                    <Link
-                      href="/register"
-                      className="btn-primary"
-                      style={{
-                        padding:
-                          "9px 17px",
-
-                        fontSize: 12.5,
-
-                        whiteSpace:
-                          "nowrap",
-
-                        textDecoration:
-                          "none",
-
-                        borderRadius: 10,
-                      }}
-                    >
-                      Daftar Sekarang
-                    </Link>
                   </>
                 )}
               </div>
@@ -2368,62 +2323,6 @@ export default function Navbar() {
                   </>
                 ) : (
                   <>
-                    <Link
-                      href="/login"
-                      onClick={
-                        closeMobile
-                      }
-                      style={{
-                        flex: 1,
-
-                        textAlign:
-                          "center",
-
-                        padding:
-                          "10px",
-
-                        border:
-                          "1px solid rgba(255,255,255,0.22)",
-
-                        borderRadius: 9,
-
-                        color:
-                          "rgba(255,255,255,0.92)",
-
-                        textDecoration:
-                          "none",
-
-                        fontSize: 13,
-                      }}
-                    >
-                      Masuk
-                    </Link>
-
-                    <Link
-                      href="/register"
-                      onClick={
-                        closeMobile
-                      }
-                      className="btn-primary"
-                      style={{
-                        flex: 1,
-
-                        textAlign:
-                          "center",
-
-                        padding:
-                          "10px",
-
-                        fontSize: 13,
-
-                        textDecoration:
-                          "none",
-
-                        borderRadius: 9,
-                      }}
-                    >
-                      Daftar
-                    </Link>
                   </>
                 )}
               </div>

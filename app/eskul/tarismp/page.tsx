@@ -202,7 +202,6 @@ export default function TariPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap');
 
         * {
           box-sizing: border-box;
@@ -213,7 +212,7 @@ export default function TariPage() {
         }
 
         .tri-root {
-          font-family: 'Barlow', sans-serif;
+          font-family: var(--font-barlow), sans-serif;
           background: #F4F6F0;
           color: #171717;
           min-height: 100vh;
@@ -373,7 +372,7 @@ export default function TariPage() {
           align-items: center;
           gap: 12px;
 
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 12px;
           font-weight: 700;
           letter-spacing: 3px;
@@ -396,7 +395,7 @@ export default function TariPage() {
         }
 
         .tri-title {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(90px, 15vw, 190px);
           line-height: 0.8;
           letter-spacing: 3px;
@@ -441,7 +440,7 @@ export default function TariPage() {
 
           color: #fff;
 
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 13px;
           font-weight: 800;
           letter-spacing: 1.5px;
@@ -561,7 +560,7 @@ export default function TariPage() {
         .tri-stat-num {
           position: relative;
 
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: 48px;
           line-height: 1;
 
@@ -600,7 +599,7 @@ export default function TariPage() {
           align-items: center;
           gap: 10px;
 
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
           font-size: 11px;
           font-weight: 800;
           letter-spacing: 3px;
@@ -625,7 +624,7 @@ export default function TariPage() {
         }
 
         .tri-section-heading {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
 
           font-size: clamp(48px, 6vw, 72px);
           color: #000000;
@@ -773,7 +772,7 @@ export default function TariPage() {
           position: relative;
           z-index: 2;
 
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
 
           font-size: 23px;
           font-weight: 800;
@@ -898,7 +897,7 @@ export default function TariPage() {
         }
 
         .tri-kegiatan-no {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
 
           font-size: 38px;
           line-height: 1;
@@ -924,7 +923,7 @@ export default function TariPage() {
         }
 
         .tri-kegiatan-nama {
-          font-family: 'Barlow Condensed', sans-serif;
+          font-family: var(--font-barlow-condensed), sans-serif;
 
           font-size: 18px;
           font-weight: 800;
@@ -1022,7 +1021,7 @@ export default function TariPage() {
           right: -30px;
           bottom: -55px;
 
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
 
           font-size: clamp(110px, 16vw, 240px);
 
@@ -1072,7 +1071,7 @@ export default function TariPage() {
         }
 
         .tri-cta-title {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
 
           font-size: clamp(45px, 5vw, 68px);
 
