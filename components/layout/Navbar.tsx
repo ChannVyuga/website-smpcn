@@ -2228,7 +2228,7 @@ export default function Navbar() {
               {/* SPMB */}
 
               <Link
-                href="/spmb"
+                href="https://spmb.citranegara.online/spmb"
                 onClick={closeMobile}
                 style={MOBILE_LINK}
               >

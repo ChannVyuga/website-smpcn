@@ -157,7 +157,7 @@ export default function Footer() {
             {[
               { href: '/', label: 'Beranda' },
               { href: '/tentang', label: 'Tentang Kami' },
-              { href: '/https://spmb.citranegara.online/spmb', label: 'SPMB Online' },
+              { href: 'https://spmb.citranegara.online/spmb', label: 'SPMB Online' },
             ].map(link => (
               <Link key={link.href} href={link.href} style={{
                 display: 'block', color: 'rgba(255,255,255,0.6)',
