@@ -76,7 +76,7 @@ export default function AdminSidebar() {
         }}
       >
         <img
-          src="/images/smpcn.png"
+          src="/images/logo-smp-iu.png"
           alt="Logo SMP Citra Negara"
           width={42}
           height={42}

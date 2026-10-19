@@ -31,7 +31,7 @@ export default function Footer() {
                 }}
               >
                 <Image
-                  src="/images/smpcn.png"
+                  src="/images/logo-smp-iu.png"
                   alt="Logo SMP Citra Negara"
                   fill
                   sizes="50px"

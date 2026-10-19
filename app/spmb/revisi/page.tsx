@@ -153,7 +153,7 @@ export default function RevisiPage() {
                                       }}
                                     >
                                       <Image
-                                        src="/images/smpcn.png"
+                                        src="/images/logo-smp-iu.png"
                                         alt="Logo SMK Citra Negara"
                                         width={35}
                                         height={35}

@@ -1387,7 +1387,7 @@ export default function Navbar() {
               >
                 <div className="nav-logo-box">
                   <Image
-                    src="/images/smpcn.png"
+                    src="/images/logo-smp-iu.png"
                     alt="Logo SMP Citra Negara"
                     width={44}
                     height={44}

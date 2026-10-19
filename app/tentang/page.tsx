@@ -744,7 +744,7 @@ export default function TentangPage() {
                 }}
               >
                 <Image
-                  src="/images/smpcn.png"
+                  src="/images/logo-smp-iu.png"
                   alt="Logo SMP Citra Negara"
                   fill
                   priority

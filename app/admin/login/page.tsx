@@ -51,7 +51,7 @@ export default function LoginPage() {
                           position: 'relative',
                         }}>
                           <Image
-                            src="/images/smpcn.png"
+                            src="/images/logo-smp-iu.png"
                             alt="Logo SMP Citra Negara"
                             width={52}
                             height={52}

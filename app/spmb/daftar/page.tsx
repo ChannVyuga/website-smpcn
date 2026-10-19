@@ -189,7 +189,7 @@ export default function DaftarPage() {
                                      }}
                                    >
                                      <Image
-                                       src="/images/smpcn.png"
+                                       src="/images/logo-smp-iu.png"
                                        alt="Logo SMP Citra Negara"
                                        width={35}
                                        height={35}
